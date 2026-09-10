@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 - 2026-09-10
+
+- Added repeated-run study orchestration with preserved raw evidence.
+- Added overall-score and per-scenario descriptive statistics.
+- Added privacy-conscious provenance capture with Git/spec/corpus fingerprints.
+- Added self-verifying benchmark release bundles with SHA-256 file manifests.
+- Added optional Ed25519 release-manifest signing and verification.
+- Added provenance, statistics, and release-manifest JSON Schemas.
+- Added statistics regression tests and CI coverage.
+
 All notable CareResilience Bench milestones are documented here.
 
 ## 0.5.0 — 2026-09-10

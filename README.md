@@ -1,14 +1,14 @@
-# CareResilience Bench v0.5.0
+# CareResilience Bench v0.6.0
 
 **Open resilience and failure testing for FHIR applications.**
 
 CareResilience Bench asks a question that conformance testing alone does not answer: when the health-data environment around an application becomes slow, incomplete, stale, duplicated, unauthorized, or intermittently unavailable, does the consuming workflow detect and contain the problem?
 
-## v0.5 milestone
+## v0.6 milestone
 
-v0.5 makes benchmark results easier to reproduce and audit. It adds a deterministic evaluator corpus, GitHub Actions CI, SHA-256 evidence manifests, optional Ed25519 signatures, verification tooling, and an explicit evidence-integrity model.
+v0.6 turns individual benchmark runs into auditable studies. It adds repeated-run orchestration, descriptive statistics, privacy-conscious provenance capture, and self-verifying release bundles that hash every published artifact.
 
-The benchmark continues to support the external-client observation contract introduced in v0.4.
+v0.5 integrity manifests and the external-client observation contract remain supported.
 
 ## Core scenarios
 
@@ -69,6 +69,40 @@ npm run verify:manifest -- artifacts/evidence/run.json artifacts/manifests/run.m
 
 For attributable evidence, generate an Ed25519 key pair locally, set `CARE_SIGNING_PRIVATE_KEY`, and regenerate the manifest. See `docs/EVIDENCE_INTEGRITY.md`.
 
+
+## Repeated-run study
+
+Run five sequential benchmark executions and preserve every raw result:
+
+```bash
+npm run study
+```
+
+Override the count and destination:
+
+```bash
+CARE_RUNS=10 CARE_STUDY_DIR=artifacts/studies/demo npm run study
+```
+
+The study produces `evidence/`, `statistics.json`, `provenance.json`, and `study.json`. Statistics include overall-score mean/median/range/sample standard deviation/95% descriptive interval plus per-scenario pass rate and duration summaries.
+
+## Provenance
+
+```bash
+npm run provenance -- artifacts/studies/provenance.json
+```
+
+Provenance records code/spec/corpus fingerprints and runtime context while intentionally excluding hostnames, usernames, tokens, and environment-variable values.
+
+## Release bundles
+
+```bash
+npm run release:bundle -- artifacts/studies/demo artifacts/releases/demo-v0.6
+npm run release:verify -- artifacts/releases/demo-v0.6
+```
+
+Every included study artifact receives a SHA-256 entry in the release manifest. Optional Ed25519 signing uses the same signing-key environment variables introduced in v0.5.
+
 ## CI
 
 `.github/workflows/ci.yml` runs on pushes and pull requests to `main` and performs:
@@ -101,7 +135,8 @@ CareResilience Bench is a research and engineering prototype. It is not an ONC o
 - **v0.3** formal assertion model, severity weights, evidence schema, CLI runner — complete
 - **v0.4** external application/client adapter and evaluation contract — complete
 - **v0.5** benchmark corpus + CI + integrity manifests + optional signatures — complete
-- **v0.6** provenance capture + repeat-run statistics + benchmark release bundles
+- **v0.6** provenance capture + repeat-run statistics + benchmark release bundles — complete
+- **v0.7** real application study adapters + publishable comparison tables
 - **v1.0** documented public benchmark methodology and comparative study
 
 ## Repository structure
@@ -113,7 +148,7 @@ adapters/                    external-client observer adapters
 corpus/core-v1/              deterministic evaluator regression corpus
 docs/                        benchmark, adapter, threat, study, integrity docs
 schemas/                     machine-readable evidence/observation schemas
-scripts/                     CLI, corpus validation, signing and verification
+scripts/                     CLI, repeated studies, statistics, provenance, release verification
 .github/workflows/           automated CI
 ```
 
