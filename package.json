@@ -1,13 +1,19 @@
 {
   "name": "care-resilience-bench",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "typecheck": "tsc --noEmit",
     "benchmark": "node scripts/run-benchmark.mjs",
-    "observe": "node adapters/reference-observer.mjs"
+    "observe": "node adapters/reference-observer.mjs",
+    "validate:corpus": "node scripts/validate-corpus.mjs",
+    "keys:generate": "node scripts/generate-signing-keypair.mjs",
+    "manifest": "node scripts/generate-manifest.mjs",
+    "verify:manifest": "node scripts/verify-manifest.mjs",
+    "ci": "npm run validate:corpus && npm run typecheck && npm run build"
   },
   "dependencies": {
     "next": "16.3.4",

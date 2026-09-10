@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.vercel/
+.env*
+!.env.example
+artifacts/evidence/*.json
+artifacts/manifests/*.json
+keys/*.pem
+.DS_Store
+
+*.tsbuildinfo
